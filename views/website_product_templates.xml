@@ -1,0 +1,37 @@
+<odoo>
+    <template id="products_item_inherit" inherit_id="website_sale.products_item">
+        <xpath expr="//div[hasclass('product_price')]" position="replace">
+            <div class="product_price" itemprop="offers" itemscope="itemscope" itemtype="http://schema.org/Offer">
+                <t t-if="product.discount_percentage > 0">
+                    <del class="text-muted me-1 h6 mb-0">
+                        <em class="small" t-esc="product.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                    </del>
+                    <span class="h6 mb-0 text-primary" t-esc="product.discounted_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                </t>
+                <t t-else="">
+                    <span class="h6 mb-0" t-esc="product.list_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                </t>
+                <span itemprop="price" style="display:none;" t-esc="product.discounted_price if product.discount_percentage > 0 else product.list_price"/>
+                <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>
+            </div>
+        </xpath>
+    </template>
+
+    <template id="product_price_inherit" inherit_id="website_sale.product_price">
+        <xpath expr="//h3/span[hasclass('oe_price')]" position="replace">
+            <h3 class="css_editable_mode_hidden">
+                <t t-if="product.discount_percentage > 0">
+                    <del class="text-muted me-1 h5">
+                        <span t-esc="combination_info['list_price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                    </del>
+                    <span class="oe_price text-primary" style="white-space: nowrap;" t-esc="product.discounted_price" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                </t>
+                <t t-else="">
+                    <span class="oe_price" style="white-space: nowrap;" t-esc="combination_info['price']" t-options="{'widget': 'monetary', 'display_currency': website.currency_id}"/>
+                </t>
+                <span itemprop="price" style="display:none;" t-esc="combination_info['price']"/>
+                <span itemprop="priceCurrency" style="display:none;" t-esc="website.currency_id.name"/>
+            </h3>
+        </xpath>
+    </template>    
+</odoo>
